@@ -1,0 +1,235 @@
+/* TablePage.css */
+.table-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.table-info {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.table-info h1 {
+  font-size: 2em;
+  color: #333;
+}
+
+.table-info p {
+  font-size: 1.2em;
+  color: #555;
+}
+
+.menu {
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 30px;
+}
+
+.menu h2 {
+  text-align: center;
+  font-size: 1.8em;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.category-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.category-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5em;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.category-icon:hover {
+  color: #ff6347; /* เปลี่ยนสีเมื่อวางเมาส์ */
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.menu-item:hover {
+  background-color: #f9f9f9;
+}
+
+.menu-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.menu-item div {
+  flex: 1;
+  margin-left: 10px;
+  font-size: 1.2em;
+  color: #333;
+}
+
+.menu-item button {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.menu-item button:hover {
+  background-color: #218838;
+}
+
+/* Order Summary */
+.order-summary {
+  position: absolute;
+  top: 50px; /* ขึ้นไปจากไอคอน Cart */
+  right: 10px; /* ขยับไปทางขวาจากขอบ */
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 320px;
+  z-index: 10;
+  font-family: "Arial", sans-serif;
+  max-height: 500px;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Animation for showing the order summary */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header ของ Order Summary */
+.order-summary h2 {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 15px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* รายการสั่งซื้อ */
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 8px;
+}
+
+/* สไตล์ปุ่มเพิ่ม-ลด และลบ */
+.order-controls button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.order-controls button:hover {
+  background-color: #0056b3;
+}
+
+/* ปุ่ม "Remove" */
+.order-controls button:focus {
+  outline: none;
+}
+
+.order-summary .order-details span {
+  font-size: 14px;
+  color: #555;
+}
+
+.order-summary .total-price {
+  margin-top: 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #007bff;
+  text-align: right;
+}
+
+.no_item_selected {
+  color: #888;
+  text-align: center;
+}
+
+/* ปรับปรุงขนาดและความสวยงามของไอคอนบนเมนู */
+.category-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.category-icon:hover {
+  background-color: #007bff;
+}
+
+.category-icon svg {
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.category-icon:hover svg {
+  color: white;
+}
+
+.category-buttons button {
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.category-buttons .active {
+  text-decoration: underline; /* เส้นใต้ */
+  font-weight: bold; /* ทำตัวหนา */
+  color: #007bff; /* สีเมื่อเลือก */
+  background-color: #ff0000; /* สีพื้นหลังเมื่อเลือก (เลือกเพิ่มได้) */
+}
+
+.category-buttons button:hover {
+  color: #ff6347; /* สีเมื่อเม้าส์ชี้ */
+}
+
+.category-buttons .active:hover {
+  color: #007bff; /* สีที่คงที่เมื่อเลือกแล้ว */
+}

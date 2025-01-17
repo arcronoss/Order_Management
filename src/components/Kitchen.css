@@ -1,0 +1,108 @@
+/* พื้นหลังและการตั้งค่าเริ่มต้น */
+.kitchen-background {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-color: #222; /* ใช้สีเข้มที่นุ่มตา */
+    display: flex;
+    flex-direction: column;
+    padding-top: 100px; /* ให้พื้นที่ด้านบนเพื่อหลีกเลี่ยงการทับของเมนูบาร์ */
+    color: #f1f1f1; /* สีตัวอักษรขาว */
+    font-family: 'Noto Sans', sans-serif;
+}
+
+/* สไตล์ส่วนหัวของหน้า Kitchen */
+.kitchen-header {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #ff4500; /* สีส้มแดงสว่าง */
+    margin-bottom: 40px;
+    text-transform: uppercase; /* เพิ่มความโดดเด่น */
+    letter-spacing: 2px; /* เพิ่มการห่างระหว่างตัวอักษร */
+}
+
+/* กรอบสำหรับการจัดการคิวคำสั่ง */
+.kitchen-order-list {
+    padding: 30px;
+    background-color: #333;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    margin: 0 auto;
+    max-width: 1000px;
+    overflow-y: auto;
+}
+
+/* การแสดงผลคำสั่งซื้อในคิว */
+/* การแสดงผลคำสั่งซื้อในคิว */
+.kitchen-order-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid #444;
+    font-size: 1.4rem;
+    background-color: #444;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-bottom: 3px; /* เพิ่มระยะห่างระหว่างรายการอาหาร */
+}
+
+.kitchen-order-item:hover {
+    background-color: #555; /* เปลี่ยนสีพื้นหลังเมื่อ hover */
+    transform: scale(1.02); /* เพิ่มขนาดเล็กน้อยให้ดูน่าสนใจ */
+}
+
+.kitchen-order-item span {
+    font-weight: 700;
+    color: #fff;
+}
+
+/* ปุ่มให้การจัดการคำสั่งซื้อ */
+/* ปุ่มให้การจัดการคำสั่งซื้อ */
+.kitchen-button {
+    background: linear-gradient(135deg, #000000, #ff0000); /* ไล่สีจากสีดำไปเป็นสีแดง */
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* เมื่อเมาส์ hover ปุ่ม */
+.kitchen-button:hover {
+    background-color: #45a049;
+    transform: scale(1.1); /* ขยายปุ่มเล็กน้อย */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* เพิ่มเงาให้ปุ่ม */
+}
+
+/* เมื่อกดปุ่ม */
+.kitchen-button:active {
+    transform: scale(0.98); /* หดปุ่มเล็กน้อยเมื่อกด */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* ลดขนาดเงา */
+}
+
+/* สไตล์เมื่อปุ่มถูก disabled */
+.kitchen-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* สไตล์สำหรับการแสดงเวลา */
+.kitchen-time {
+    font-size: 1.1rem;
+    color: #ff6347;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 15px;
+    letter-spacing: 1px; /* เพิ่มการห่างระหว่างตัวอักษร */
+}
+
+/* เพิ่มคิวเวลาที่สวยงามและดูสะอาดตา */
+.kitchen-time span {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
