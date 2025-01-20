@@ -1,19 +1,24 @@
 /* TablePage.css */
 .table-page {
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 10px;
 }
 
 .table-info {
-  text-align: center;
-  margin-bottom: 20px;
+  /* text-align: center; */
+  margin-bottom: 0px;
 }
 
 .table-info h1 {
   font-size: 2em;
-  color: #333;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: bold;
+  background: linear-gradient(to right, red, black);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .table-info p {
@@ -28,8 +33,9 @@
 }
 
 .menu h2 {
-  text-align: center;
-  font-size: 1.8em;
+  font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  text-align: left;
+  font-size: 2.5em;
   color: #333;
   margin-bottom: 10px;
 }
@@ -53,58 +59,74 @@
 .category-icon:hover {
   color: #ff6347; /* เปลี่ยนสีเมื่อวางเมาส์ */
 }
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* กำหนดให้มี 2 คอลัมน์ */
+  gap: 20px; /* ระยะห่างระหว่างบัตร */
+  margin-top: 20px;
+  justify-items: center; /* จัดกึ่งกลาง */
+}
 
-.menu-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px;
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 10px;
+.menu-card {
+  border: rgb(212, 212, 212) solid 1px;
   background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+  text-align: center;
+  padding: 0px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.menu-item:hover {
-  background-color: #f9f9f9;
+.menu-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.menu-image {
-  width: 50px;
-  height: 50px;
+.menu-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
   object-fit: cover;
-  border-radius: 8px;
 }
 
-.menu-item div {
-  flex: 1;
-  margin-left: 10px;
-  font-size: 1.2em;
+.menu-details {
+  margin-top: 10px;
+}
+
+.menu-details h3 {
+  font-size: 1.1em;
   color: #333;
+  margin: 5px 0;
 }
 
-.menu-item button {
-  background-color: #28a745;
+.menu-details p {
+  font-size: 1em;
+  color: #fc0000;
+}
+
+.menu-details button {
+  background-color: #ff0000;
   color: #fff;
   border: none;
-  padding: 8px 15px;
-  border-radius: 5px;
+  padding: 10px 15px;
+  border-radius: 100px;
+  margin-bottom: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.menu-item button:hover {
+.menu-details button:hover {
   background-color: #218838;
 }
 
 /* Order Summary */
 .order-summary {
-  position: absolute;
-  top: 50px; /* ขึ้นไปจากไอคอน Cart */
+  position: fixed;
+  top: 80px; /* ขึ้นไปจากไอคอน Cart */
   right: 10px; /* ขยับไปทางขวาจากขอบ */
   background-color: #fff;
   border-radius: 12px;
+  border: #c6c6c6 solid 1px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 20px;
   width: 320px;
@@ -137,6 +159,38 @@
   text-align: center;
 }
 
+@media (max-width: 414px) {
+  /* Order Summary */
+  .order-summary {
+    position: fixed;
+    top: 55px; /* ลดระยะจากไอคอน Cart */
+    right: 5px; /* ขยับชิดขอบขวา */
+    left: 5px; /* ขยับชิดขอบซ้าย */
+    background-color: #fff;
+    border: #c6c6c6 solid 1px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px; /* ลด Padding เพื่อเพิ่มพื้นที่ */
+    width: auto; /* ปรับความกว้างให้พอดีกับหน้าจอ */
+    z-index: 10;
+    font-family: "Arial", sans-serif;
+    max-height: 400px; /* ลดความสูงเพื่อให้เลื่อนง่าย */
+    overflow-y: auto;
+    transition: all 0.3s ease;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  /* Header ของ Order Summary */
+  .order-summary h2 {
+    font-size: 1rem; /* ลดขนาดตัวอักษร */
+    color: #333;
+    margin-bottom: 10px; /* ลดระยะห่าง */
+    font-weight: 600;
+    text-align: center;
+  }
+}
+
+
 /* รายการสั่งซื้อ */
 .order-item {
   display: flex;
@@ -147,11 +201,16 @@
 }
 
 /* สไตล์ปุ่มเพิ่ม-ลด และลบ */
+.order-controls {
+  display: flex;
+  gap: 5px; /* ระยะห่างระหว่างปุ่ม */
+}
+
 .order-controls button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 5px 10px;
+  background-color: #ffffff;
+  color: rgb(255, 0, 0);
+  border: rgb(255, 0, 0) solid 1px;
+  padding: 1px 5px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
@@ -159,7 +218,8 @@
 }
 
 .order-controls button:hover {
-  background-color: #0056b3;
+  background-color: #ff0000;
+  color: #ffffff;
 }
 
 /* ปุ่ม "Remove" */
@@ -172,6 +232,11 @@
   color: #555;
 }
 
+.order-summary-bottom{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .order-summary .total-price {
   margin-top: 15px;
   font-size: 1.2rem;
@@ -180,11 +245,26 @@
   text-align: right;
 }
 
+.submit-order-button{
+  background-color: #ff0000;
+  color: rgb(255, 255, 255);
+  border: rgb(183, 183, 183) solid 1px;
+  padding: 1px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.submit-order-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
 .no_item_selected {
   color: #888;
   text-align: center;
 }
-
 /* ปรับปรุงขนาดและความสวยงามของไอคอนบนเมนู */
 .category-icon {
   display: inline-flex;
@@ -198,7 +278,7 @@
 }
 
 .category-icon:hover {
-  background-color: #007bff;
+  background-color: #ffbb00;
 }
 
 .category-icon svg {

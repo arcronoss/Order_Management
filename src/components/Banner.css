@@ -1,0 +1,66 @@
+/* แสดงแบนเนอร์ */
+.banner {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 800px;
+  height: 550px; /* ปรับขนาดแบนเนอร์ตามที่ต้องการ */ 
+  border-radius: 20px;
+}
+
+/* การจัดเรียงภาพในแถบเลื่อน */
+.slider {
+  display: flex;
+  transition: transform 1s ease-in-out;
+  width: 100%; /* ความกว้างของ slider = จำนวนภาพ * 100% */
+}
+
+/* การจัดการภาพในแบนเนอร์ */
+.banner-image {
+  width: 100%;
+  height: 100%; /* ให้ภาพยืดเต็มพื้นที่ container */
+  object-fit: cover; /* ปรับภาพให้เต็มพื้นที่ */
+  flex-shrink: 0;
+}
+
+/* แสดงจุดด้านล่าง */
+.indicators {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+
+/* จุดปกติ */
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  transition: background-color 0.3s;
+}
+
+/* จุด active */
+.indicator.active {
+  background-color: #fff;
+}
+
+@media (max-width: 550px) {
+  .banner {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 250px; /* ปรับขนาดแบนเนอร์ตามที่ต้องการ */ 
+    border-radius: 20px;
+  }
+
+  .banner-image {
+    width: 100%;
+    height: 250px; /* ให้ความสูงสอดคล้องกับ .banner */
+    object-fit: cover; /* ปรับให้ภาพพอดีกับขนาดที่กำหนด */
+    flex-shrink: 0;
+  }
+  
+}
