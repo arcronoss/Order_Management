@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { doc, getDoc, collection, getDocs, addDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+  addDoc,
+  onSnapshot,
+} from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import MenuBar from "./MenuBar";
 import { query, orderBy } from "firebase/firestore";
@@ -28,24 +35,22 @@ const TablePage = () => {
 
   useEffect(() => {
     if (showInvoiceOrder) {
-      fetchInvoiceData();
-    }
-  }, [showInvoiceOrder]);
-
-  const fetchInvoiceData = async () => {
-    try {
       const ordersRef = collection(db, "Orders");
-      const ordersQuery = query(ordersRef, orderBy("timestamp", "asc")); // เรียงจากเก่าไปใหม่
-      const querySnapshot = await getDocs(ordersQuery);
-      const orders = querySnapshot.docs
-        .map((doc) => ({ id: doc.id, ...doc.data() }))
-        .filter((order) => order.tableId === tableId); // กรองตาม tableId
-      setInvoiceData(orders);
-    } catch (error) {
-      console.error("Error fetching invoice data:", error);
-    }
-  };
+      const ordersQuery = query(ordersRef, orderBy("timestamp", "asc")); // เรียงลำดับตามเวลา
 
+      // ใช้ onSnapshot เพื่อฟังการเปลี่ยนแปลง
+      const unsubscribe = onSnapshot(ordersQuery, (querySnapshot) => {
+        const orders = querySnapshot.docs
+          .map((doc) => ({ id: doc.id, ...doc.data() }))
+          .filter((order) => order.tableId === tableId); // กรองตาม tableId
+        setInvoiceData(orders); // อัปเดตข้อมูลใบแจ้งหนี้
+      });
+
+      // Cleanup listener เมื่อ component ถูก unmount
+      return () => unsubscribe();
+    }
+  }, [showInvoiceOrder, tableId]); // ฟังการเปลี่ยนแปลงเฉพาะเมื่อ showInvoiceOrder หรือ tableId เปลี่ยน
+  
   useEffect(() => {
     const fetchTableData = async () => {
       try {
