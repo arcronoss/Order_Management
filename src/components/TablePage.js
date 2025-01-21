@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { doc, getDoc, collection, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import MenuBar from "./MenuBar";
+import { query, orderBy } from "firebase/firestore";
+import logo from "../images/and_logo.png";
 import {
   FaGlassMartiniAlt,
   FaHamburger,
@@ -21,6 +23,28 @@ const TablePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [cartItems, setCartItems] = useState([]);
   const [showOrderSummary, setShowOrderSummary] = useState(false);
+  const [showInvoiceOrder, setShowInvoiceOrder] = useState();
+  const [invoiceData, setInvoiceData] = useState([]); // เก็บข้อมูลใบแจ้งหนี้
+
+  useEffect(() => {
+    if (showInvoiceOrder) {
+      fetchInvoiceData();
+    }
+  }, [showInvoiceOrder]);
+
+  const fetchInvoiceData = async () => {
+    try {
+      const ordersRef = collection(db, "Orders");
+      const ordersQuery = query(ordersRef, orderBy("timestamp", "asc")); // เรียงจากเก่าไปใหม่
+      const querySnapshot = await getDocs(ordersQuery);
+      const orders = querySnapshot.docs
+        .map((doc) => ({ id: doc.id, ...doc.data() }))
+        .filter((order) => order.tableId === tableId); // กรองตาม tableId
+      setInvoiceData(orders);
+    } catch (error) {
+      console.error("Error fetching invoice data:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchTableData = async () => {
@@ -121,10 +145,8 @@ const TablePage = () => {
 
   const [successMessage, setSuccessMessage] = useState(""); // state สำหรับข้อความสำเร็จ
   const [errorMessage, setErrorMessage] = useState(""); // state สำหรับข้อความข้อผิดพลาด
-
   const handleSubmitOrder = async () => {
     try {
-      // Prepare order data
       const orderData = {
         tableId,
         items: cartItems.map((item) => ({
@@ -134,20 +156,18 @@ const TablePage = () => {
           price: item.price,
         })),
         total: calculateTotalPrice(),
-        timestamp: new Date(),
+        timestamp: new Date(), // เพิ่ม timestamp
       };
 
-      // Add order to Firestore
       await addDoc(collection(db, "Orders"), orderData);
 
       setCartItems([]);
-      setSuccessMessage("ส่งรายการสำเร็จ"); // แสดงข้อความสำเร็จ
-      setErrorMessage(""); // เคลียร์ข้อความข้อผิดพลาด
+      setSuccessMessage("ส่งรายการสำเร็จ");
+      setErrorMessage("");
     } catch (error) {
       console.error("Error submitting order:", error);
-      alert("Failed to submit order.");
-      setErrorMessage("Failed to submit order."); // แสดงข้อความข้อผิดพลาด
-      setSuccessMessage(""); // เคลียร์ข้อความสำเร็จ
+      setErrorMessage("Failed to submit order.");
+      setSuccessMessage("");
     }
   };
 
@@ -157,8 +177,20 @@ const TablePage = () => {
     <>
       <MenuBar
         cartItemCount={calculateTotalQuantity()}
-        toggleOrderSummary={() => setShowOrderSummary(!showOrderSummary)}
+        toggleOrderSummary={() => {
+          setShowOrderSummary((prev) => {
+            if (!prev) setShowInvoiceOrder(false);
+            return !prev;
+          });
+        }}
+        invoiceOrder={() => {
+          setShowInvoiceOrder((prev) => {
+            if (!prev) setShowOrderSummary(false);
+            return !prev;
+          });
+        }}
       />
+
       <div className="table-page">
         <div className="table-info">
           {tableData ? (
@@ -277,6 +309,72 @@ const TablePage = () => {
                 รวม: {calculateTotalPrice()} บาท
               </div>
             </div>
+          </div>
+        )}
+        {showInvoiceOrder && (
+          <div className="invoice-order">
+            {/* เพิ่มโลโก้และชื่อร้าน */}
+            <div className="invoice-header">
+              <img src={logo} alt="Logo" className="invoice-logo" />
+              <h1>Snack & Grill's</h1>
+            </div>
+            <h2>ใบแจ้งหนี้สำหรับโต๊ะ {tableId}</h2>
+            {invoiceData.length > 0 ? (
+              <div>
+                {invoiceData.map((order, orderIndex) => (
+                  <div key={order.id} className="invoice-item">
+                    <h3>คำสั่งซื้อครั้งที่ {orderIndex + 1}</h3>
+                    {order.items.map((item, index) => (
+                      <div key={index}>
+                        <span>{item.name}</span> -
+                        <span>{item.quantity} ชิ้น</span> -
+                        <span>{item.price * item.quantity} บาท</span>
+                      </div>
+                    ))}
+                    <p>รวม: {order.total} บาท</p>
+                  </div>
+                ))}
+                {/* รวมยอดคำสั่งซื้อทุกรอบ */}
+                <div className="invoice-total">
+                  <h3>รวมคำสั่งซื้อทั้งหมด</h3>
+                  <p>
+                    {invoiceData.reduce(
+                      (grandTotal, order) => grandTotal + order.total,
+                      0
+                    )}{" "}
+                    บาท
+                  </p>
+                  {/* คำนวณ VAT 7% */}
+                  <p>
+                    VAT 7%:{" "}
+                    {(
+                      invoiceData.reduce(
+                        (grandTotal, order) => grandTotal + order.total,
+                        0
+                      ) * 0.07
+                    ).toFixed(2)}{" "}
+                    บาท
+                  </p>
+                  {/* รวมยอดรวม (รวม VAT) */}
+                  <p>
+                    ยอดรวมสุทธิ:{" "}
+                    {(
+                      invoiceData.reduce(
+                        (grandTotal, order) => grandTotal + order.total,
+                        0
+                      ) * 1.07
+                    ).toFixed(2)}{" "}
+                    บาท
+                  </p>
+                </div>
+                {/* เพิ่มวิธีการชำระเงิน */}
+                <div className="payment-method">
+                  <p>วิธีการชำระเงิน: เงินสด</p>
+                </div>
+              </div>
+            ) : (
+              <p>ไม่มีคำสั่งซื้อ</p>
+            )}
           </div>
         )}
       </div>

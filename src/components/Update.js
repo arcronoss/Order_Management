@@ -496,3 +496,37 @@ export default TablePage;
 
 // export default Banner;
 
+// // {showInvoiceOrder && (
+//   <div className="invoice-order">
+//   <h2>ใบแจ้งหนี้สำหรับโต๊ะ {tableId}</h2>
+//   {invoiceData.length > 0 ? (
+//     <div>
+//       {invoiceData.map((order, orderIndex) => (
+//         <div key={order.id} className="invoice-item">
+//           <h3>คำสั่งซื้อครั้งที่ {orderIndex + 1}</h3>
+//           {order.items.map((item, index) => (
+//             <div key={index}>
+//               <span>{item.name}</span> -
+//               <span>{item.quantity} ชิ้น</span> -
+//               <span>{item.price * item.quantity} บาท</span>
+//             </div>
+//           ))}
+//           <p>รวม: {order.total} บาท</p>
+//         </div>
+//       ))}
+//       {/* รวมยอดคำสั่งซื้อทุกรอบ */}
+//       <div className="invoice-total">
+//         <h3>รวมคำสั่งซื้อทั้งหมด</h3>
+//         <p>
+//           {invoiceData.reduce(
+//             (grandTotal, order) => grandTotal + order.total,
+//             0
+//           )}{" "}
+//           บาท
+//         </p>
+//       </div>
+//     </div>
+//   ) : (
+//     <p>ไม่มีคำสั่งซื้อ</p>
+//   )}
+// </div>
