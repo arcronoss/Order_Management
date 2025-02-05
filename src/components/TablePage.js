@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import MenuBar from "./MenuBar";
-import { query, orderBy } from "firebase/firestore";
+import { query, orderBy, limit } from "firebase/firestore";
 import logo from "../images/and_logo.png";
 import {
   FaGlassMartiniAlt,
@@ -32,6 +32,26 @@ const TablePage = () => {
   const [showOrderSummary, setShowOrderSummary] = useState(false);
   const [showInvoiceOrder, setShowInvoiceOrder] = useState();
   const [invoiceData, setInvoiceData] = useState([]); // เก็บข้อมูลใบแจ้งหนี้
+  const [orderStatus, setOrderStatus] = useState(""); // เก็บสถานะออร์เดอร์
+  // สร้าง state สำหรับเก็บรายการออเดอร์
+  const [orders, setOrders] = useState([]);
+  // สร้าง state สำหรับเก็บว่ากำลังขยายออเดอร์ไหน
+  const [expandedOrder, setExpandedOrder] = useState(null);
+
+  useEffect(() => {
+    const ordersRef = collection(db, "Orders");
+    const ordersQuery = query(ordersRef, orderBy("queueNumber", "asc"));
+
+    // ฟังการเปลี่ยนแปลงแบบเรียลไทม์
+    const unsubscribe = onSnapshot(ordersQuery, (querySnapshot) => {
+      const fetchedOrders = querySnapshot.docs
+        .map((doc) => ({ id: doc.id, ...doc.data() }))
+        .filter((order) => order.tableId === tableId);
+      setOrders(fetchedOrders);
+    });
+
+    return () => unsubscribe();
+  }, [tableId]);
 
   useEffect(() => {
     if (showInvoiceOrder) {
@@ -50,7 +70,7 @@ const TablePage = () => {
       return () => unsubscribe();
     }
   }, [showInvoiceOrder, tableId]); // ฟังการเปลี่ยนแปลงเฉพาะเมื่อ showInvoiceOrder หรือ tableId เปลี่ยน
-  
+
   useEffect(() => {
     const fetchTableData = async () => {
       try {
@@ -150,8 +170,30 @@ const TablePage = () => {
 
   const [successMessage, setSuccessMessage] = useState(""); // state สำหรับข้อความสำเร็จ
   const [errorMessage, setErrorMessage] = useState(""); // state สำหรับข้อความข้อผิดพลาด
+  const [isSubmitting, setIsSubmitting] = useState(false); // ป้องกันการกดซ้ำ
+
   const handleSubmitOrder = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     try {
+      const ordersRef = collection(db, "Orders");
+
+      const latestOrderQuery = query(
+        ordersRef,
+        orderBy("timestamp", "desc"),
+        limit(1)
+      );
+      const latestOrderSnapshot = await getDocs(latestOrderQuery);
+
+      let latestQueueNumber = 0;
+      if (!latestOrderSnapshot.empty) {
+        const latestOrderData = latestOrderSnapshot.docs[0].data();
+        latestQueueNumber = Number(latestOrderData.queueNumber) || 0; // แปลงเป็นตัวเลข
+      }
+
+      const newQueueNumber = latestQueueNumber + 1;
+
       const orderData = {
         tableId,
         items: cartItems.map((item) => ({
@@ -161,20 +203,57 @@ const TablePage = () => {
           price: item.price,
         })),
         total: calculateTotalPrice(),
-        timestamp: new Date(), // เพิ่ม timestamp
+        timestamp: new Date(),
+        queueNumber: newQueueNumber,
+        status: "รอคิว",
       };
 
-      await addDoc(collection(db, "Orders"), orderData);
+      await addDoc(ordersRef, orderData);
 
       setCartItems([]);
       setSuccessMessage("ส่งรายการสำเร็จ");
       setErrorMessage("");
     } catch (error) {
       console.error("Error submitting order:", error);
-      setErrorMessage("Failed to submit order.");
+      setErrorMessage("เกิดข้อผิดพลาดในการส่งออเดอร์");
       setSuccessMessage("");
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    const fetchOrderStatus = async () => {
+      const ordersRef = collection(db, "Orders");
+      const ordersQuery = query(ordersRef, orderBy("queueNumber", "asc"));
+
+      const unsubscribe = onSnapshot(ordersQuery, (querySnapshot) => {
+        const orders = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        // หาคำสั่งซื้อที่ตรงกับ tableId
+        const tableOrder = orders.find((order) => order.tableId === tableId);
+        if (tableOrder) {
+          // ตรวจสอบสถานะของออเดอร์
+          if (tableOrder.status === "ชำระเงินแล้ว") {
+            setOrderStatus("ชำระเงินแล้ว");
+          } else if (tableOrder.status === "รอชำระเงิน") {
+            setOrderStatus("รอชำระเงิน");
+          } else if (tableOrder.status === "กำลังทำอาหาร") {
+            setOrderStatus("กำลังทำอาหาร");
+          } else {
+            // ถ้าสถานะไม่ตรงกับเงื่อนไขด้านบน ให้ถือว่า "รอคิว"
+            setOrderStatus("รอคิว");
+          }
+        }
+      });
+
+      return () => unsubscribe(); // Cleanup เมื่อ component ถูก unmount
+    };
+
+    fetchOrderStatus();
+  }, [tableId]); // useEffect นี้จะทำงานเมื่อ tableId เปลี่ยนแปลง
 
   if (isLoading) return <p>Loading menu items...</p>;
 
@@ -201,6 +280,48 @@ const TablePage = () => {
           {tableData ? (
             <div>
               <h1>โต๊ะหมายเลข {tableData.table_number}</h1>
+              <div className="order-status-bar">
+                <h2>คำสั่งซื้อของโต๊ะ {tableId}</h2>
+                {orders.length > 0 ? (
+                  orders.map((order) => (
+                    <div
+                      key={order.id}
+                      className={`order-card ${
+                        expandedOrder === order.id ? "expanded" : ""
+                      }`}
+                      onClick={() =>
+                        setExpandedOrder(
+                          expandedOrder === order.id ? null : order.id
+                        )
+                      }
+                    >
+                      <h3>
+                        {order.status === "รอชำระเงิน" ||
+                        order.status === "ชำระเงินแล้ว"
+                          ? "ออเดอร์นี้เสร็จสิ้นแล้ว"
+                          : `ออเดอร์ #${order.queueNumber}`}
+                      </h3>
+                      <p>สถานะ: {order.status}</p>
+
+                      {expandedOrder === order.id && (
+                        <div className="order-details">
+                          <ul>
+                            {order.items.map((item, index) => (
+                              <h4 key={index}>
+                                {item.name} {item.quantity} ชิ้น
+                              </h4>
+                            ))}
+                          </ul>
+                          <p>รวม: {order.total} บาท</p>
+                        </div>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <p>ยังไม่มีออเดอร์</p>
+                )}
+              </div>
+
               <Banner />
             </div>
           ) : (

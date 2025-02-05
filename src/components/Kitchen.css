@@ -39,4 +39,59 @@
     border: 0;
     border-top: 1px solid #ddd;
   }
+  .order-buttons {
+    display: flex;
+    gap: 10px;
+  }
   
+  .accept-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .accept-button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
+  
+  .delete-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .success-button {
+    background-color: #3d47db; /* สีเขียวเข้ม */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+
+  .success-button:disabled {
+    background-color: #d6e9d7; /* สีเขียวจางๆ เมื่อ disabled */
+    cursor: not-allowed;
+  }
+  .order-status.completed {
+    margin-left: 10px; /* เว้นระยะจากปุ่ม Delete */
+    text-align: center;
+    margin-top: 10px;
+  }
+  .payment-button {
+    background-color: #c5b6b6; /* สีเหลือง */
+    color: black;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
