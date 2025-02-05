@@ -1,0 +1,159 @@
+/* Importing a modern, professional font */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body */
+body {
+  font-family: "Poppins", sans-serif; /* Using Poppins font for a modern and professional feel */
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+/* Container for Sales History */
+.sales-history {
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+}
+
+/* Heading */
+.sales-history h2 {
+  font-size: 2rem;
+  color: #007bff;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.sales-history h4 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.sales-history p {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* Stats Button */
+.stats-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  text-decoration: none;
+  font-size: 1.5rem;
+  color: #333;
+  display: inline-block;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  transition: background-color 0.3s ease;
+}
+
+.stats-button:hover {
+  background-color: #ddd;
+}
+
+/* Sales Data List */
+.sales-history ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.sales-history ul p {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.sales-history ul p strong {
+  /* color: #4caf50; */
+}
+
+/* Graph Containers */
+.responsive-container {
+  margin-top: 20px;
+}
+
+.responsive-container .recharts-wrapper {
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form for Deleting Data */
+.sales-history input {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 15px;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+
+.sales-history input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.sales-history button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sales-history button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.sales-history button:hover:not(:disabled) {
+  background-color: #45a049;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sales-history {
+    padding: 15px;
+  }
+
+  .stats-button {
+    font-size: 1.2rem;
+    padding: 8px;
+  }
+
+  .sales-history h2 {
+    font-size: 1.7rem;
+  }
+
+  .sales-history h4 {
+    font-size: 1.3rem;
+  }
+
+  .sales-history input {
+    font-size: 0.9rem;
+  }
+
+  .sales-history button {
+    font-size: 0.9rem;
+  }
+}

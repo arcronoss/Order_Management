@@ -50,7 +50,9 @@ const Banner = () => {
         {images.map((_, index) => (
           <span
             key={index}
-            className={`indicator ${index === currentImageIndex ? "active" : ""}`}
+            className={`indicator ${
+              index === currentImageIndex ? "active" : ""
+            }`}
           ></span>
         ))}
       </div>

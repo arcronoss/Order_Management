@@ -295,23 +295,24 @@ const TablePage = () => {
                         )
                       }
                     >
-                      <h3>
-                        {order.status === "รอชำระเงิน" ||
-                        order.status === "ชำระเงินแล้ว"
-                          ? "ออเดอร์นี้เสร็จสิ้นแล้ว"
-                          : `ออเดอร์ #${order.queueNumber}`}
-                      </h3>
-                      <p>สถานะ: {order.status}</p>
-
+                      <div className="text-expanded">
+                        <h3>
+                          {order.status === "รอชำระเงิน" ||
+                          order.status === "ชำระเงินแล้ว"
+                            ? "ออเดอร์นี้เสร็จสิ้นแล้ว"
+                            : `ออเดอร์ #${order.queueNumber}`}
+                        </h3>
+                        <p>สถานะ: {order.status}</p>
+                      </div>
                       {expandedOrder === order.id && (
                         <div className="order-details">
-                          <ul>
+                          <h4>
                             {order.items.map((item, index) => (
                               <h4 key={index}>
-                                {item.name} {item.quantity} ชิ้น
+                                {item.name} {item.quantity} รายการ
                               </h4>
                             ))}
-                          </ul>
+                          </h4>
                           <p>รวม: {order.total} บาท</p>
                         </div>
                       )}
@@ -321,7 +322,6 @@ const TablePage = () => {
                   <p>ยังไม่มีออเดอร์</p>
                 )}
               </div>
-
               <Banner />
             </div>
           ) : (
@@ -471,7 +471,7 @@ const TablePage = () => {
                     บาท
                   </p>
                   {/* คำนวณ VAT 7% */}
-                  <p>
+                  {/* <p>
                     VAT 7%:{" "}
                     {(
                       invoiceData.reduce(
@@ -480,7 +480,7 @@ const TablePage = () => {
                       ) * 0.07
                     ).toFixed(2)}{" "}
                     บาท
-                  </p>
+                  </p> */}
                   {/* รวมยอดรวม (รวม VAT) */}
                   <p>
                     ยอดรวมสุทธิ:{" "}

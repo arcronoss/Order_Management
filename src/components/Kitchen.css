@@ -1,97 +1,146 @@
-.kitchen {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  .orders-list {
-    margin-top: 20px;
-  }
-  
-  .order-item {
-    gap: 20px;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
-  .order-item h3 {
-    margin: 0;
-    font-size: 18px;
-  }
-  
-  .order-item ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .order-item ul li {
-    margin-bottom: 5px;
-  }
-  
-  .order-total {
-    margin-top: 10px;
-    font-weight: bold;
-  }
-  
-  hr {
-    margin-top: 15px;
-    border: 0;
-    border-top: 1px solid #ddd;
-  }
-  .order-buttons {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .accept-button {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .accept-button:disabled {
-    background-color: #ddd;
-    cursor: not-allowed;
-  }
-  
-  .delete-button {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  .success-button {
-    background-color: #3d47db; /* สีเขียวเข้ม */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-  }
+/* Kitchen.css */
 
-  .success-button:disabled {
-    background-color: #d6e9d7; /* สีเขียวจางๆ เมื่อ disabled */
-    cursor: not-allowed;
-  }
-  .order-status.completed {
-    margin-left: 10px; /* เว้นระยะจากปุ่ม Delete */
-    text-align: center;
-    margin-top: 10px;
-  }
-  .payment-button {
-    background-color: #c5b6b6; /* สีเหลือง */
-    color: black;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
+/* Container หลัก */
+.kitchen {
+  margin: 20px;
+  height: 100%;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* สไตล์หัวเรื่อง */
+.kitchen h2 {
+  text-align: left;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Container สำหรับรายการคำสั่งซื้อ */
+.orders-list-kitchen {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* สไตล์แต่ละคำสั่งซื้อ */
+.order-item-kitchen {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 15px 20px;
+  border-radius: 6px;
+}
+
+/* สไตล์หัวข้อในแต่ละคำสั่งซื้อ */
+.order-item-kitchen h3 {
+  margin: 0;
+  font-size: 1.2em;
+  color: #444;
+}
+
+/* New container สำหรับจัดเรียงรายการอาหารและปุ่มในแถวเดียวกัน */
+.order-details-kitchen {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.order-details-kitchen ul {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ปุ่มในกลุ่ม order-buttons */
+.order-buttons-kitchen {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* สไตล์ส่วนแสดงยอดรวมคำสั่งซื้อ */
+.order-total-kitchen {
+  font-weight: bold;
+  margin-top: 10px;
+  color: #555;
+}
+
+/* สไตล์ปุ่มพื้นฐาน */
+.order-buttons-kitchen button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.3s ease;
+}
+
+/* ปุ่ม Accept Order */
+.accept-button-kitchen {
+  background-color: #3498db;
+  color: #fff;
+}
+
+.accept-button-kitchen:hover {
+  background-color: #2980b9;
+}
+
+/* ปุ่ม Order Success */
+.success-button-kitchen {
+  background-color: #27ae60;
+  color: #fff;
+}
+
+.success-button-kitchen:hover {
+  background-color: #1e8449;
+}
+
+/* ปุ่ม ลูกค้าจ่ายเงินแล้ว */
+.payment-button-kitchen {
+  background-color: #f39c12;
+  color: #fff;
+}
+
+.payment-button-kitchen:hover {
+  background-color: #d68910;
+}
+
+/* ปุ่ม Delete */
+.delete-button {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
+
+/* สไตล์ข้อความสถานะคำสั่งซื้อ */
+.order-status-kitchen {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.85em;
+  margin-top: 10px;
+}
+
+.order-status-kitchen.completed {
+  background-color: #dff0d8;
+  color: #3c763d;
+}
+
+.order-status-kitchen.paid {
+  background-color: #d9edf7;
+  color: #31708f;
+}
+
+/* เส้นแบ่งรายการ */
+.order-item-kitchen hr {
+  margin-top: 15px;
+  border: none;
+  border-top: 1px solid #ddd;
+}
